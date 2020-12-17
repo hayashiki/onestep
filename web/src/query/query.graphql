@@ -1,0 +1,6 @@
+mutation OpenProject($input: CreateProjectInput!) {
+    createProject(input: $input) {
+        name
+        isActive
+    }
+}
