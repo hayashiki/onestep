@@ -12,6 +12,8 @@ import (
 	"golang.org/x/oauth2/github"
 	"log"
 	"net/http"
+	"go.pyspa.org/brbundle"
+	"go.pyspa.org/brbundle/brchi"
 )
 
 type appHandler func(http.ResponseWriter, *http.Request) *appError
@@ -81,6 +83,9 @@ func (app *App) Handler() http.Handler {
 		r.Method(http.MethodGet, "/github/callback", appHandler(app.oauth2GithubHandler))
 	})
 
+	r.NotFound(brchi.Mount(brbundle.WebOption{
+		SPAFallback: "index.html",
+	}))
 	return r
 }
 

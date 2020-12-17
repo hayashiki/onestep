@@ -9,3 +9,5 @@
 *.out
 
 vendor/
+embedded-bundle.go
+web/dist/

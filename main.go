@@ -9,6 +9,7 @@ import (
 	"os"
 )
 
+//go:generate go run go.pyspa.org/brbundle/cmd/brbundle embedded -f web/dist
 func main() {
 	config := config.MustReadConfigFromEnv()
 	app, err := app.NewApp(config)

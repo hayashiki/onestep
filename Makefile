@@ -9,9 +9,9 @@ export GO111MODULE ?= on
 test:
 	go test -v ./...
 
-.PHONY: deploy
-deploy:
-	gcloud app deploy -q
+#.PHONY: deploy
+#deploy:
+#	gcloud app deploy -q
 
 .PHONY: show-version
 show-version: $(GOBIN)/gobump
@@ -36,3 +36,9 @@ lint:
 .PHONY: vet
 vet:
 	go vet ./...
+
+build:
+	gcloud builds submit --tag gcr.io/newtapps/onestep
+
+deploy: build
+	gcloud run deploy onestep --image gcr.io/newtapps/onestep --platform managed --region us-central1
