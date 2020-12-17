@@ -1,0 +1,13 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/newtapps/onesteps', '.']
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/newtapps/onesteps']
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'onesteps', '--image', 'gcr.io/newtapps/onesteps', '--region', 'us-central1', '--platform', 'managed']
+images:
+  - gcr.io/newtapps/onesteps

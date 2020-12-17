@@ -1,0 +1,3 @@
+- [ ] docker-compose, fresh
+- [ ] 自動ビルド
+- [ ] 環境変数設定

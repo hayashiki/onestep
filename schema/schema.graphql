@@ -1,0 +1,22 @@
+type Query {
+    me: User
+}
+
+type Mutation {
+    ### user ###
+    userCreate(input: UserCreateInput!): User
+    userUpdate(input: UserUpdateInput!): User
+
+    ### project ###
+    userCreate(input: UserCreateInput!): User
+    userUpdate(input: UserUpdateInput!): User
+
+    ### task ###
+    userCreate(input: UserCreateInput!): User
+    userUpdate(input: UserUpdateInput!): User
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}

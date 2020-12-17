@@ -1,0 +1,11 @@
+type Project {
+    name: String!
+#    isActive: Boolean!
+    members: User
+    owner: User
+}
+
+input CreateProjectInput {
+    name: String!
+    private: Boolean
+}
