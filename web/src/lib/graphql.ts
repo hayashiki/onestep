@@ -9,9 +9,16 @@ function createApolloClient() {
         return new ApolloClient({
             ssrMode: !isBrowser,
             link: new HttpLink({
-                uri: "/api/graphql/",
+                // uri: "/api/graphql/",
+                uri: "http://localhost:4000",
             }),
-            cache: new InMemoryCache(),
+            cache: new InMemoryCache({
+                typePolicies: {
+                    Project: {
+                        keyFields: ["name"],
+                    },
+                },
+            }),
         });
     } catch (error) {
         console.error("fail to create apollo client", error)
