@@ -1,11 +1,31 @@
 type Project {
+    id: ID!
     name: String!
-#    isActive: Boolean!
-    members: User
-    owner: User
+    isActive: Boolean!
+#    members: User
+#    owner: User
+}
+
+type ProjectConnection {
+    cursor: String!
+    hasMore: Boolean!
+    projects: [Project]!
 }
 
 input CreateProjectInput {
     name: String!
-    private: Boolean
 }
+
+input UpdateProjectInput {
+    name: String!
+}
+
+type CloseProjectResult {
+    success: Boolean!
+}
+
+type DeleteProjectResult {
+    success: Boolean!
+}
+
+

@@ -1,19 +1,15 @@
 type Query {
-    me: User
+#    me: User
+    activeProject: Project
+    projects(cursor: String): ProjectConnection!
 }
 
 type Mutation {
-    ### user ###
-    userCreate(input: UserCreateInput!): User
-    userUpdate(input: UserUpdateInput!): User
-
-    ### project ###
-    userCreate(input: UserCreateInput!): User
-    userUpdate(input: UserUpdateInput!): User
-
-    ### task ###
-    userCreate(input: UserCreateInput!): User
-    userUpdate(input: UserUpdateInput!): User
+    createProject(input: CreateProjectInput!): Project
+    openProject(name: String!): Project
+    updateProject(input: UpdateProjectInput!): Project
+    closeProject: CloseProjectResult!
+    deleteProject(name: String!): DeleteProjectResult!
 }
 
 schema {

@@ -1,0 +1,35 @@
+---
+schema:
+  - "schema/**/*.graphql"
+
+exec:
+  filename: pkg/gqlgen/exec/generated.go
+  package: exec
+
+model:
+  filename: pkg/gqlgen/dto/dto_gen.go
+  package: dto
+
+resolver:
+  package: resolver
+  filename: pkg/gqlgen/resolver/origin/resolver.go
+  #  filename: tmp/resolver.go
+  type: Resolver
+autobind: []
+
+models:
+  ID: # graphql type
+    model:
+      - github.com/99designs/gqlgen/graphql.IntID
+#  Issue:
+#    model: github.com/hayashiki/onestep/pkg/model.Issue
+  Project:
+    model: github.com/hayashiki/onestep/pkg/model.Project
+
+  #  CreateIssueInput:
+  #    model: github.com/hayashiki/squirrel/pkg/model.CreateIssueInput
+  User:
+    model: github.com/hayashiki/onestep/pkg/model.User
+#    fields:
+#      id:
+#        resolver: true

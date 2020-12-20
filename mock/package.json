@@ -1,0 +1,19 @@
+{
+  "name": "mock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@graphql-tools/graphql-file-loader": "^6.2.6",
+    "@graphql-tools/load": "^6.2.5",
+    "apollo-server": "^2.19.0",
+    "graphql": "^15.4.0",
+    "join": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -2,6 +2,7 @@
 package model
 
 import (
+	"cloud.google.com/go/datastore"
 	"time"
 )
 
@@ -19,6 +20,7 @@ const UserKind = "users"
 //}
 
 type User struct {
+	Key      *datastore.Key `form:"-" json:"-" binding:"-"  datastore:"__key__"`
 	ID       int64    `json:"id" datastore:"id"`
 	Sub      string    `json:"sub"`
 	Name     string    `json:"name"`
