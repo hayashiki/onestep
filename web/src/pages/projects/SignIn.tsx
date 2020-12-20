@@ -29,6 +29,8 @@ const SignIn: React.FC = () => {
         if (submitting) {
             return;
         }
+
+
         setSubmitting(true);
         fetch(
             "http://localhost:8080/auth/github/invoke",
@@ -43,7 +45,7 @@ const SignIn: React.FC = () => {
         }).catch((err: Error): void => {
             window.console.error(err.message);
         }).finally((): void => {
-            window.location.replace("https://github.com/login/oauth/authorize?client_id=02f589214dcdf3683816&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauth%2Fgithub%2Fcallback&response_type=code&state=660aabcbb4d9e241")
+            // window.location.replace("https://github.com/login/oauth/authorize?client_id=02f589214dcdf3683816&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauth%2Fgithub%2Fcallback&response_type=code&state=660aabcbb4d9e241")
             setSubmitting(false);
         });
     }, [submitting]);

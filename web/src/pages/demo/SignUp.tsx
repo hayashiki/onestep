@@ -81,6 +81,33 @@ const SignUp: React.FC = () => {
         }
     }, [state])
 
+    const [submitting, setSubmitting] = useState(false)
+
+    const onClickLogin = useCallback((): void => {
+        if (submitting) {
+            return;
+        }
+        setSubmitting(true);
+        fetch(
+            "/api/auth/github/invoke",
+        ).then((res: Response): Promise<string> => {
+            if (res.ok) {
+                console.log(res)
+                // alert(res.text())
+                return res.text();
+            } else {
+                throw new Error(res.statusText);
+            }
+        }).then((redirectUrl): void => {
+            window.location.replace(redirectUrl);
+        }).catch((err: Error): void => {
+            window.console.error(err.message);
+        }).finally((): void => {
+            // window.location.replace("https://github.com/login/oauth/authorize?client_id=02f589214dcdf3683816&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauth%2Fgithub%2Fcallback&response_type=code&state=660aabcbb4d9e241")
+            setSubmitting(false);
+        });
+    }, [submitting]);
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
@@ -138,7 +165,7 @@ const SignUp: React.FC = () => {
 
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <GithubLoginButton className={classes.github}>
+                        <GithubLoginButton className={classes.github} onClick={onClickLogin}>
                             <span className={classes.githubText}>Sign up with Github</span>
                         </GithubLoginButton>
                     </Grid>
