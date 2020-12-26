@@ -10,7 +10,7 @@ function createApolloClient() {
             ssrMode: !isBrowser,
             link: new HttpLink({
                 // uri: "/api/graphql/",
-                uri: "http://localhost:4000",
+                uri: "http://localhost:8080/api/query",
             }),
             cache: new InMemoryCache({
                 typePolicies: {

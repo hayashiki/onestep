@@ -28,7 +28,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import DeleteIcon from "@material-ui/icons/Delete";
 import LaunchIcon from "@material-ui/icons/Launch";
 import { Alert } from "@material-ui/lab";
-import {Project} from "@/generated/graphql";
+import {Project, useOpenProjectMutation} from "@/generated/graphql";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,9 +47,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const PROJECTS = gql`
     query Projects {
-        projects {
-            name
-            isActive
+        projects(cursor: "") {
+            projects {
+                id
+                name
+                isActive
+            }
         }
     }
 `;
@@ -100,7 +103,6 @@ const ProjectList: React.FC = () => {
                                 fragment ActiveProject on Project {
                                     name
                                     isActive
-                                    type
                                 }
                             `,
                         });
@@ -114,7 +116,6 @@ const ProjectList: React.FC = () => {
                                 fragment OpenProject on Project {
                                     name
                                     isActive
-                                    type
                                 }
                             `,
                         });
@@ -168,6 +169,7 @@ const ProjectList: React.FC = () => {
     const [deleteProjName, setDeleteProjName] = useState(null);
     const [deleteDiagOpen, setDeleteDiagOpen] = useState(false);
     const handleDeleteButtonClick = (name: string) => {
+        // @ts-ignore
         setDeleteProjName(name);
         setDeleteDiagOpen(true);
     };
@@ -179,7 +181,7 @@ const ProjectList: React.FC = () => {
     };
 
     const [deleteNotifOpen, setDeleteNotifOpen] = useState(false);
-    const handleCloseDeleteNotif = (_, reason?: string) => {
+    const handleCloseDeleteNotif = (_: any, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }
@@ -196,9 +198,9 @@ const ProjectList: React.FC = () => {
                 {projLoading && <CircularProgress />}
             </Box>
 
-            {projData?.projects.length > 0 && (
+            {projData?.projects.projects.length > 0 && (
                 <List className={classes.projectsList}>
-                    {projData.projects.map((project: Project) => (
+                    {projData.projects?.projects.map((project: Project) => (
                         <ListItem key={project.name}>
                             <ListItemAvatar>
                                 <Avatar

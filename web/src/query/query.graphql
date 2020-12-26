@@ -1,6 +1,87 @@
 mutation OpenProject($input: CreateProjectInput!) {
     createProject(input: $input) {
+        id
         name
         isActive
+    }
+}
+
+fragment ProjectFragment on Project {
+    id
+    name
+    title
+    description
+    closed
+    createdAt
+    updatedAt
+    isActive
+}
+
+fragment IssueFragment on Issue {
+    id
+    title
+    description
+    closed
+    createdAt
+    updatedAt
+}
+
+fragment ColumnFragment on Column {
+    id
+    title
+    issues {
+        id
+        title
+        closed
+        updatedAt
+    }
+}
+
+query Projects {
+    projects {
+        ...ProjectFragment
+    }
+}
+
+query Project($where: FindInput!) {
+    project(where: $where) {
+        ...ProjectFragment
+        columns {
+            ...ColumnFragment
+        }
+    }
+}
+
+query Issues($filters: Filters!) {
+    issues(filters: $filters) {
+        ...IssueFragment
+    }
+}
+
+mutation RearrangeColumn(
+    $where: RearrangeColumnFindInput!
+    $data: RearrangeColumnInput!
+) {
+    rearrangeColumn(where: $where, data: $data)
+}
+
+mutation RearrangeIssue(
+    $where: RearrangeIssueFindInput!
+    $data: RearrangeIssueInput!
+) {
+    rearrangeIssue(where: $where, data: $data)
+}
+
+mutation UpdateProject($input: UpdateProjectInput!) {
+    updateProject(input: $input) {
+        id
+        name
+        isActive
+    }
+}
+
+mutation DeleteProject($id: ID!) {
+    deleteProject(id: $id) {
+        success
     }
 }
