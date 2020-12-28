@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import {NextPage} from "next";
-import {Project, ProjectFragmentFragment, useDeleteProjectMutation, useProjectsQuery} from "@/generated/graphql";
+import {
+    Project,
+    ProjectFragmentFragment,
+    useCloseProjectMutation,
+    useDeleteProjectMutation, useOpenProjectMutation,
+    useProjectsQuery
+} from "@/generated/graphql";
 import {
     Button,
     CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
@@ -13,10 +19,15 @@ import {
 } from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import DeleteIcon from "@material-ui/icons/Delete";
+import CloseIcon from "@material-ui/icons/Close";
+import LaunchIcon from "@material-ui/icons/Launch";
+import Editor from "@/components/hetty/reqlog/Editor";
 
 const ProjectList: NextPage = () => {
 
     const { data, loading, error} = useProjectsQuery()
+
+    console.log(data?.projects)
 
     const [deleteProjId, setDeleteProjId] = useState<string>("")
     const [deleteProjName, setDeleteProjName] = useState<string>("")
@@ -58,15 +69,24 @@ const ProjectList: NextPage = () => {
         })
     }
     const [deleteNotifOpen, setDeleteNotifOpen] = useState(false);
-    const handleCloseDeleteNotif = (_, reason?: string) => {
+    const handleCloseDeleteNotif = (_: any, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }
         setDeleteNotifOpen(false);
     };
 
+    const [closeProject, {error: closeProjErr}] = useCloseProjectMutation({
+
+    })
+
+    const [openProject, {loading: openProjLoading, error: openProjErr}] = useOpenProjectMutation({
+
+    })
+
     return (
         <>
+            <Editor content={"response.body"} contentType={"html"} />
             <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
                 <DialogTitle>
                     Delete project “<strong>{deleteProjName}</strong>”?
@@ -112,19 +132,47 @@ const ProjectList: NextPage = () => {
                                 {project?.name} {project?.isActive && <em>(Active)</em>}
                             </ListItemText>
                             <ListItemSecondaryAction>
+                                {project?.isActive && (
+                                    <Tooltip title="Close project">
+                                        <IconButton onClick={() => closeProject()}>
+                                            <CloseIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                )}
+                                {!project?.isActive && (
+                                    <Tooltip title="Open project">
+                                        <span>
+                                          <IconButton
+                                              disabled={openProjLoading || loading}
+                                              onClick={() =>
+                                                  openProject({
+                                                      variables: { id: project?.id as string },
+                                                  })
+                                              }
+                                          >
+                                              <LaunchIcon />
+                                          </IconButton>
+                                        </span>
+                                    </Tooltip>
+                                )}
                                 <Tooltip title="Delete Project">
-                            <span>
-                                <IconButton>
-                                    <DeleteIcon
-                                        onClick={() => handleDeleteButtonClick(project)}
-                                    />
-                                </IconButton>
-                            </span>
+                                    <span>
+                                        <IconButton>
+                                            <DeleteIcon
+                                                onClick={() => handleDeleteButtonClick(project as Project)}
+                                            />
+                                        </IconButton>
+                                    </span>
                                 </Tooltip>
                             </ListItemSecondaryAction>
                         </ListItem>
                     ))}
                 </List>
+            )}
+            {data?.projects.length === 0 && (
+                <Alert severity="info">
+                    There are no projects. Create one to get started.
+                </Alert>
             )}
         </>
     )

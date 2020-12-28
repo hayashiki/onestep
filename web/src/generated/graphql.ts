@@ -68,7 +68,7 @@ export type MutationCreateProjectArgs = {
 
 
 export type MutationOpenProjectArgs = {
-  name: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
@@ -251,19 +251,6 @@ export type UserUpdateInput = {
   email?: Maybe<Scalars['String']>;
 };
 
-export type OpenProjectMutationVariables = Exact<{
-  input: CreateProjectInput;
-}>;
-
-
-export type OpenProjectMutation = (
-  { __typename?: 'Mutation' }
-  & { createProject?: Maybe<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'name' | 'isActive'>
-  )> }
-);
-
 export type ProjectFragmentFragment = (
   { __typename?: 'Project' }
   & Pick<Project, 'id' | 'name' | 'title' | 'description' | 'closed' | 'createdAt' | 'updatedAt' | 'isActive'>
@@ -372,6 +359,43 @@ export type DeleteProjectMutation = (
   ) }
 );
 
+export type CloseProjectMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CloseProjectMutation = (
+  { __typename?: 'Mutation' }
+  & { closeProject: (
+    { __typename?: 'CloseProjectResult' }
+    & Pick<CloseProjectResult, 'success'>
+  ) }
+);
+
+export type CreateProjectMutationVariables = Exact<{
+  input: CreateProjectInput;
+}>;
+
+
+export type CreateProjectMutation = (
+  { __typename?: 'Mutation' }
+  & { createProject?: Maybe<(
+    { __typename?: 'Project' }
+    & Pick<Project, 'id' | 'name' | 'isActive'>
+  )> }
+);
+
+export type OpenProjectMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type OpenProjectMutation = (
+  { __typename?: 'Mutation' }
+  & { openProject?: Maybe<(
+    { __typename?: 'Project' }
+    & Pick<Project, 'id' | 'name' | 'isActive'>
+  )> }
+);
+
 export const ProjectFragmentFragmentDoc = gql`
     fragment ProjectFragment on Project {
   id
@@ -406,40 +430,6 @@ export const ColumnFragmentFragmentDoc = gql`
   }
 }
     `;
-export const OpenProjectDocument = gql`
-    mutation OpenProject($input: CreateProjectInput!) {
-  createProject(input: $input) {
-    id
-    name
-    isActive
-  }
-}
-    `;
-export type OpenProjectMutationFn = Apollo.MutationFunction<OpenProjectMutation, OpenProjectMutationVariables>;
-
-/**
- * __useOpenProjectMutation__
- *
- * To run a mutation, you first call `useOpenProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useOpenProjectMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [openProjectMutation, { data, loading, error }] = useOpenProjectMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useOpenProjectMutation(baseOptions?: Apollo.MutationHookOptions<OpenProjectMutation, OpenProjectMutationVariables>) {
-        return Apollo.useMutation<OpenProjectMutation, OpenProjectMutationVariables>(OpenProjectDocument, baseOptions);
-      }
-export type OpenProjectMutationHookResult = ReturnType<typeof useOpenProjectMutation>;
-export type OpenProjectMutationResult = Apollo.MutationResult<OpenProjectMutation>;
-export type OpenProjectMutationOptions = Apollo.BaseMutationOptions<OpenProjectMutation, OpenProjectMutationVariables>;
 export const ProjectsDocument = gql`
     query Projects {
   projects {
@@ -670,3 +660,102 @@ export function useDeleteProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProjectMutationHookResult = ReturnType<typeof useDeleteProjectMutation>;
 export type DeleteProjectMutationResult = Apollo.MutationResult<DeleteProjectMutation>;
 export type DeleteProjectMutationOptions = Apollo.BaseMutationOptions<DeleteProjectMutation, DeleteProjectMutationVariables>;
+export const CloseProjectDocument = gql`
+    mutation CloseProject {
+  closeProject {
+    success
+  }
+}
+    `;
+export type CloseProjectMutationFn = Apollo.MutationFunction<CloseProjectMutation, CloseProjectMutationVariables>;
+
+/**
+ * __useCloseProjectMutation__
+ *
+ * To run a mutation, you first call `useCloseProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCloseProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [closeProjectMutation, { data, loading, error }] = useCloseProjectMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCloseProjectMutation(baseOptions?: Apollo.MutationHookOptions<CloseProjectMutation, CloseProjectMutationVariables>) {
+        return Apollo.useMutation<CloseProjectMutation, CloseProjectMutationVariables>(CloseProjectDocument, baseOptions);
+      }
+export type CloseProjectMutationHookResult = ReturnType<typeof useCloseProjectMutation>;
+export type CloseProjectMutationResult = Apollo.MutationResult<CloseProjectMutation>;
+export type CloseProjectMutationOptions = Apollo.BaseMutationOptions<CloseProjectMutation, CloseProjectMutationVariables>;
+export const CreateProjectDocument = gql`
+    mutation CreateProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    id
+    name
+    isActive
+  }
+}
+    `;
+export type CreateProjectMutationFn = Apollo.MutationFunction<CreateProjectMutation, CreateProjectMutationVariables>;
+
+/**
+ * __useCreateProjectMutation__
+ *
+ * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>) {
+        return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument, baseOptions);
+      }
+export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
+export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export const OpenProjectDocument = gql`
+    mutation OpenProject($id: ID!) {
+  openProject(id: $id) {
+    id
+    name
+    isActive
+  }
+}
+    `;
+export type OpenProjectMutationFn = Apollo.MutationFunction<OpenProjectMutation, OpenProjectMutationVariables>;
+
+/**
+ * __useOpenProjectMutation__
+ *
+ * To run a mutation, you first call `useOpenProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOpenProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [openProjectMutation, { data, loading, error }] = useOpenProjectMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOpenProjectMutation(baseOptions?: Apollo.MutationHookOptions<OpenProjectMutation, OpenProjectMutationVariables>) {
+        return Apollo.useMutation<OpenProjectMutation, OpenProjectMutationVariables>(OpenProjectDocument, baseOptions);
+      }
+export type OpenProjectMutationHookResult = ReturnType<typeof useOpenProjectMutation>;
+export type OpenProjectMutationResult = Apollo.MutationResult<OpenProjectMutation>;
+export type OpenProjectMutationOptions = Apollo.BaseMutationOptions<OpenProjectMutation, OpenProjectMutationVariables>;
